@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>嘉大扶星小幫手｜免費關鍵字查詢版</title>
+<style>
+:root{--navy:#3f3b8f;--blue:#6558d3;--teal:#168f83;--bg:#fff8ec;--ink:#282640;--muted:#77748c;--line:#eee3f2;--white:#fff}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 8% 8%,#fff0c9 0,transparent 28%),radial-gradient(circle at 95% 24%,#fce1eb 0,transparent 25%),var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans TC","Microsoft JhengHei",sans-serif}
+header{background:linear-gradient(125deg,#5146b8 0%,#7659d9 52%,#f07f91 100%);color:#fff;padding:30px 18px 36px;position:relative;overflow:hidden}
+header:after{content:"✦  ✨  ✦";position:absolute;right:5%;top:18px;font-size:28px;letter-spacing:10px;opacity:.38;pointer-events:none}
+.head{max-width:1040px;margin:auto;position:relative;z-index:1}.eyebrow{font-size:13px;letter-spacing:.08em;opacity:.9}
+h1{font-size:clamp(25px,4vw,36px);margin:8px 0;text-shadow:0 2px 8px #35258a33}.subtitle{opacity:.95;line-height:1.65;max-width:720px}
+main{max-width:1040px;margin:-18px auto 36px;padding:0 16px;display:flex;flex-direction:column;gap:18px;position:relative}
+/* 聊天問答區與常用服務分類整合為同一個面板 */
+.chat{width:100%;background:var(--white);border:1px solid #f0e7f4;border-radius:22px;box-shadow:0 12px 32px #5545a214}
+.service-categories{padding:16px 20px 18px;border-top:1px solid #f0e7f4;background:#fffafd}
+.service-categories h2{font-size:16px;margin:0 0 10px;color:var(--navy)}
+.service-categories{display:block}
+.service-categories .category{margin-right:4px;margin-bottom:8px}
+.service-categories .category{display:inline-flex;align-items:center;width:auto;vertical-align:top;margin:0;padding:9px 12px;font-size:13px;border-radius:999px;text-align:center}
+.service-categories h2{display:block}
+@media(max-width:600px){.service-categories .category{width:auto;margin:0}.service-categories{padding:14px}}
+.category{display:block;width:100%;text-align:left;padding:12px;margin:7px 0;border:1px solid #eee8fa;background:#fbf9ff;border-radius:14px;color:var(--ink);cursor:pointer;font:inherit;transition:transform .16s,background .16s,border-color .16s}
+.category:hover{transform:translateY(-1px);background:#fff1e8;border-color:#ffc6ad}
+.category.active{background:#eeeaff;border-color:#bcb0ff;color:var(--navy);font-weight:600}
+.note{font-size:12px;line-height:1.7;color:var(--muted);margin-top:16px;background:#fff9e8;border-radius:12px;padding:10px}
+.chat{display:flex;flex-direction:column;min-height:620px;overflow:hidden}
+.chathead{padding:17px 20px;border-bottom:1px solid #f0e7f4;display:flex;align-items:center;gap:12px;background:linear-gradient(90deg,#fff 0%,#fff8fc 100%)}
+.avatar{width:46px;height:46px;border-radius:17px;background:linear-gradient(135deg,#c9f5e8,#dcd5ff);color:#5146b8;display:grid;place-items:center;font-size:24px;box-shadow:0 4px 10px #6558d322}
+.chathead strong{display:block}.status{font-size:12px;color:var(--teal);margin-top:3px}
+.messages{padding:20px;flex:1;overflow:auto;max-height:520px;display:flex;flex-direction:column;gap:13px;background:linear-gradient(180deg,#fff 0%,#fffdf9 100%)}
+.msg{max-width:90%;padding:12px 15px;border-radius:18px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere}
+.bot{align-self:flex-start;background:#f3efff;border:1px solid #e6ddff;border-bottom-left-radius:6px}
+.user{align-self:flex-end;background:linear-gradient(135deg,#6558d3,#8b68de);color:#fff;border-bottom-right-radius:6px;box-shadow:0 4px 10px #6558d322}
+.msg small{display:block;color:var(--muted);font-size:11px;margin-top:8px}.user small{color:#f0eaff}
+.quick{padding:0 20px 14px;display:flex;flex-wrap:wrap;gap:8px;background:#fffdf9}
+.chip{border:1px solid #e7dffc;background:#fff;color:var(--navy);border-radius:999px;padding:9px 12px;cursor:pointer;font:inherit;font-size:13px;transition:transform .15s,background .15s}
+.chip:hover{background:#fff0e8;border-color:#ffc6ad;transform:translateY(-1px)}
+.composer{display:flex;gap:9px;padding:14px 16px;border-top:1px solid #f0e7f4;background:#fff8fc}
+input{min-width:0;flex:1;border:1px solid #e2d9f0;border-radius:14px;padding:13px 14px;font:inherit;outline:none;background:#fff}
+input:focus{border-color:var(--blue);box-shadow:0 0 0 3px #6558d322}
+button.send{border:0;background:linear-gradient(135deg,#5146b8,#8062dc);color:#fff;border-radius:14px;padding:0 19px;font:inherit;font-weight:600;cursor:pointer;box-shadow:0 4px 10px #6558d322}
+button.send:hover{filter:brightness(1.07)}
+.limitbox{margin:0 16px 12px;padding:12px 14px;border:1px solid #f1d7a6;border-radius:13px;background:#fff8e7;color:#66512a;font-size:12px;line-height:1.75}.limitbox strong{display:block;color:#76531b;margin-bottom:4px}.limitbox details{margin-top:7px}.limitbox summary{cursor:pointer;font-weight:600;color:#5146b8}.limitbox p{margin:6px 0}.limitbox a{overflow-wrap:anywhere}footer{max-width:1040px;margin:0 auto 30px;padding:0 16px;color:var(--muted);font-size:12px;line-height:1.8}
+a{color:#5146b8}
+@media(max-width:760px){main{margin-top:14px}.chat{min-height:570px}.messages{max-height:460px}.category{display:inline-block;width:auto;margin-right:4px}.panel{padding:14px}.note{margin-top:10px}}
+</style>
+</head>
+<body>
+<header><div class="head">
+<div class="eyebrow">NATIONAL CHIAYI UNIVERSITY · STUDENT SUPPORT</div>
+<h1>嘉大扶星小幫手</h1>
+<div class="subtitle">嗨！我是扶星小幫手 🌟 輸入你想知道的事，或點選下方服務分類，我來幫你找方向！</div>
+</div></header>
+<main>
+<section class="chat" aria-label="問答聊天">
+<div class="chathead"><div class="avatar">✦</div><div><strong>扶星小幫手</strong><div class="status">● 免費關鍵字查詢版｜依扶星 PDF 整理</div></div></div>
+<div class="messages" id="messages" aria-live="polite">
+<div class="msg bot">你好！我是嘉大扶星小幫手。你可以問我獎助學金、課業輔導、請假、轉系、職涯或校內支持資源。<br><br>例如：「安心就學獎助學金有哪些申請資格？」</div>
+</div>
+<div style="padding:0 20px 12px;display:flex;justify-content:flex-end"><button type="button" class="chip" id="clearChat">清除對話</button></div>
+<div class="quick">
+<button class="chip" data-q="安心就學獎助學金有哪些資格？">安心就學獎助學金資格</button>
+<button class="chip" data-q="心理健康假怎麼請？">心理健康假</button>
+<button class="chip" data-q="轉系何時申請？">轉系申請時間</button>
+<button class="chip" data-q="哪裡有課業輔導？">課業輔導資源</button>
+</div>
+<section class="service-categories" aria-label="常用服務分類">
+<h2>常用服務分類</h2>
+<button class="category active" data-q="扶星面向課業學習支持輔導">📚 課業學習支持輔導</button>
+<button class="category" data-q="扶星面向生活管理支持輔導">🌿 生活管理支持輔導</button>
+<button class="category" data-q="扶星面向職涯規劃支持輔導">💼 職涯規劃支持輔導</button>
+<button class="category" data-q="扶星面向經濟財源支持輔導">🎓 經濟財源支持輔導</button>
+<button class="category" data-q="扶星面向身心正向支持輔導">🤝 身心正向支持輔導</button>
+<button class="category" data-q="扶星面向提供多元學習管道">🧭 提供多元學習管道</button>
+</section>
+<div class="limitbox" role="note" aria-label="AI小客服使用限制">
+<strong>⚠️ 溫馨提醒｜AI 小客服的服務範圍與限制</strong>
+本工具僅依內建的扶星資料進行關鍵字比對，提供簡易資訊查詢；不是能理解所有問題的生成式 AI，未收錄的內容可能無法回答，回答也可能不完整或未反映最新公告。回答僅供參考，不具正式行政效力，不能取代學校公告、正式文件或權責單位的說明。
+<p>本工具不判定個人申請資格、獎助學金核定、學分／畢業資格、申請期限是否適用或特殊個案。涉及個人資格、期限、金額、最新規定或重要決定，請務必向承辦單位確認。</p>
+<details><summary>查看各校區教務聯絡方式</summary>
+<p>蘭潭校區｜註冊與課務組：05-2717020-2</p>
+<p>民雄校區｜聯合辦公室（教務）：05-2068609-8611</p>
+<p>新民校區｜聯合辦公室（教務）：05-2732951、2986</p>
+</details>
+</div>
+<form class="composer" id="form"><input id="question" placeholder="請輸入你的問題，例如：哪裡可以申請就學貸款？" autocomplete="off" aria-label="輸入問題"><button class="send" type="submit">送出</button></form>
+</section>
+
+</main>
+<footer>原型說明：本頁為免 API 的關鍵字比對查詢版，並非生成式 AI；回答僅依內建資料及關鍵字比對結果產生，無法保證涵蓋所有問題或即時更新。正式上線前，請由校方確認資料正確性、更新流程、個資及資安規範。</footer>
+<script>
+const data = [
+{keys:["扶星面向課業學習支持輔導"],answer:"【課業學習支持輔導】\n可查詢的支持措施包括減修／停修課程規定、教學輔導讀書會與基礎學科輔導、特資生及原民生課業輔導、安心就學讀書會、境外生課業諮詢轉介，以及校內外學習平台。\n\n你也可以繼續問：「課業輔導」、「讀書會」、「減修停修」或「境外生課業協助」。"},
+{keys:["扶星面向生活管理支持輔導"],answer:"【生活管理支持輔導】\n此面向包含學生請假作業、學生社團，以及學習成效預警等措施，協助學生適應校園生活並及早留意學習狀況。\n\n你也可以繼續問：「心理健康假」、「學生社團」或「學習成效預警」。"},
+{keys:["扶星面向職涯規劃支持輔導"],answer:"【職涯規劃支持輔導】\n此面向包含學生職涯報告及 UCAN 職涯測評、校外實習、師培生未來職涯方向，以及境外生職涯講座等資源。\n\n你也可以繼續問：「UCAN」、「校外實習」、「履歷面試」或「師培生職涯」。"},
+{keys:["扶星面向經濟財源支持輔導"],answer:"【經濟財源支持輔導】\n此面向包含獎助學金、學雜費減免、就學貸款、安心就學獎助學金，以及交換生與國際交流經費補助等資源。個別補助資格與申請期限請依當期公告確認。\n\n你也可以繼續問：「獎學金」、「學雜費減免」、「就學貸款」或「安心就學獎助學金」。"},
+{keys:["扶星面向身心正向支持輔導"],answer:"【身心正向支持輔導】\n此面向包含輔導手冊與轉介程序，以及國際學伴計畫等支持措施。若需要協助，可進一步詢問身心輔導或轉介資源。\n\n你也可以繼續問：「心理輔導」、「轉介」、「身心支持」或「國際學伴」。"},
+{keys:["扶星面向提供多元學習管道"],answer:"【提供多元學習管道】\n此面向包含創新課程與自主學習活動、碩士課程先修、輔系／雙主修／轉系、社團微學分、國際交流、圖書資源、遠距課程、英語學習機制或活動，以及師資生招考等。\n\n你也可以繼續問：「自主學習」、「微學分」、「遠距課程」、「英語學習」或「國際交流」。"},
+{keys:["扶星面向建置有效預警機制"],answer:"【建置有效預警機制】\n此面向著重蒐集校內各行政單位及學院、學系的學生學習支持資訊，建立有效的支持與預警機制。文件也列出學習成效預警措施，例如單一科目缺曠課累計達該科目應上課時數 20% 時通知家長，以及學期不及格學分達修習學分二分之一以上時進行通知與導師／系主任關懷。\n\n若想了解個人學習狀況，建議聯絡導師或教務處註冊與課務組。"},
+{keys:["安心就學","經濟不利","助學金","獎助學金","獎學金","獎學金申請","清寒","生活助學","就學貸款","學雜費減免"],answer:"【安心就學與經濟支持】\n依文件，校內資源包括學雜費減免、校務基金及捐贈款獎助學金、就學貸款，以及高教深耕計畫「安心就學獎助學金」。\n\n安心就學獎助學金的文件所列對象，包含符合規定的本國籍在學學士班及進修學士班經濟不利學生；身分類別包括低收入戶、中低收入戶、獲弱勢學生助學金補助者、特殊境遇家庭子女或孫子女、身心障礙學生及其子女、原住民、家庭突遭變故者等，部分類別須經學校審核。符合身分不代表必然核准，仍須依當期公告及完成相關輔導／學習成就要求。\n\n承辦窗口：高教深耕計畫專任助理 05-2717058。\n學務處獎助學金資訊：https://www.ncyu.edu.tw/life/Node/Nodes?nodeId=39868"},
+{keys:["課業輔導","讀書會","家教中心","補救教學","微積分","普通化學","有機化學","普通物理"],answer:"【課業學習支持】\n文件列出教學輔導讀書會／基礎學科輔導家教中心（Tutor Center），可依當學期需求提供定時定點、一對一或一對多的基礎學科、共同必修或系所專業科目輔導及學習諮詢；也有特資中心課輔、原資中心讀書會及安心就學讀書會等資源。\n\n教務處教學發展組：05-2717047。\n特資中心：https://www.ncyu.edu.tw/rces/\n原資中心：https://www.ncyu.edu.tw/isrc\n安心就學讀書會：https://reurl.cc/WObE5e"},
+{keys:["心理健康假","請假","病假","事假","喪假","生理假","產假","公假"],answer:"【學生請假】\n文件列出的假別包括公假、期中（末）考假、事假、病假、喪假、生理假、產假相關假別，以及心理健康假。文件記載心理健康假每學期以 3 日為限，無需檢附證明文件，並需通知導師，以利關懷；實際申請流程請依校內最新請假系統及規定辦理。\n\n蘭潭／新民校區生輔組：05-2717312。\n民雄聯合辦公室（學務）：05-2068606。"},
+{keys:["轉系","輔系","雙主修","跨領域"],answer:"【轉系、輔系與雙主修】\n文件記載：轉系名額及審查標準由各學系訂定，每學年度可能不同；公告時間約在每年 1 月上旬，每年 3 月受理申請，確切日期以該學年度行事曆及公告為準。文件也列有不得申請轉系的情形，例如在校修業未滿一學年（含申請當學期）、四年級以上（獸醫學系五年級以上）肄業生、休學期間學生等，詳細規定請查最新公告。\n\n教務處轉系資訊：https://myppt.cc/VAgazT\n輔系、雙主修資訊：https://myppt.cc/MHXWVH\n教務處註冊與課務組：05-2717020。"},
+{keys:["職涯","ucan","實習","履歷","面試","就業"],answer:"【職涯規劃與實習】\n文件列出學生職涯發展中心提供歷屆學生流向調查、UCAN 職涯測評、實習職缺及職涯活動資訊；校外實習通常依學系課程規定與專業領域媒合，也可留意職涯發展中心及通識教育中心公告。\n\n學生職涯發展中心：https://www.ncyu.edu.tw/careercenter/Subject?nodeId=48469\n職涯發展中心聯絡電話：05-2717173。"},
+{keys:["心理輔導","轉介","身心","諮商","輔導中心"],answer:"【身心支持與轉介】\n文件指出，若導師晤談後發現學生身心狀況影響學習，可向各校區輔導中心諮詢，或填寫學生個案轉介表，由學輔中心及相關心理師協助關懷輔導。\n\n轉介單：https://reurl.cc/ekpXYQ\n蘭潭校區：05-271-7080～3\n新民校區：05-273-2948、2438\n民雄校區：05-2068626、8627、8628、8629"},
+{keys:["微學分","自主學習","跨領域課程","遠距課程","學分學程","英文學習"],answer:"【多元學習與微學分】\n文件記載，微學分課程原則上每 9 小時採計 0.5 學分；另有數位科技跨域學習、跨領域學分學程、自主學習成果展現週、通識微學分及微學程等。遠距課程可至校內遠距教學網站查詢。\n\n課程查詢：https://reurl.cc/a1r1al\n遠距課程：https://ecourse.ncyu.edu.tw/login/index.php\n教務處綜合行政組：05-2717027、7028。"},
+{keys:["國際","境外生","交換生","國際交流"],answer:"【國際學生與交流資源】\n文件列有境外學生課業諮詢及轉介、國際學伴、校內國際交流活動，以及交換／海外研修相關補助等資源。個別補助的資格、名額與金額，請依當期公告確認。\n\n國際事務處境外生事務組：05-2717296。\n國際合作組：05-2717298。"},
+{keys:["社團","學生社團"],answer:"【學生社團】\n文件（製表日期：民國 115 年 7 月）記載校內共有 97 個社團，包含學術、學藝、服務、體育、康樂及綜合性社團；社團資訊可至課外活動組網站查詢。\n\n社團資訊：https://www.ncyu.edu.tw/act/Contents?nodeId=64505\n課外活動組：05-2717066。"}
+];
+const messages=document.getElementById('messages'), input=document.getElementById('question');
+function add(text,cls){
+ const d=document.createElement('div');d.className='msg '+cls;
+ if(cls==='bot'){
+   const urlPattern=/(https?:\/\/[^\s<>]+|www\.[^\s<>]+)/gi;
+   let last=0,match;
+   while((match=urlPattern.exec(text))!==null){
+     d.appendChild(document.createTextNode(text.slice(last,match.index)));
+     let raw=match[0],url=raw;
+     let trailing='';
+     while(/[.,，。；;：:！!？?）)】】]$/.test(url)){trailing=url.slice(-1)+trailing;url=url.slice(0,-1)}
+     const a=document.createElement('a');a.href=url.toLowerCase().startsWith('www.')?'https://'+url:url;a.textContent=url;a.target='_blank';a.rel='noopener noreferrer';
+     d.appendChild(a);if(trailing)d.appendChild(document.createTextNode(trailing));
+     last=match.index+raw.length;
+   }
+   d.appendChild(document.createTextNode(text.slice(last)));
+ }else{d.textContent=text}
+ messages.appendChild(d);messages.scrollTop=messages.scrollHeight
+}
+function answer(q){
+ const s=q.toLowerCase().replace(/\s/g,'');
+ let best=null,score=0;
+ for(const item of data){let n=0;for(const k of item.keys){if(s.includes(k.toLowerCase().replace(/\s/g,'')))n+=Math.max(1,k.length>3?2:1)}if(n>score){score=n;best=item}}
+ if(best)return best.answer;
+ return "目前內建扶星資料中找不到足夠明確的答案。\n\n本工具僅提供關鍵字比對，不會自行推論或判定個案。你可以換個關鍵字或點選下方常用服務分類；若涉及申請資格、獎助學金核定、學分／畢業資格、申請期限、最新規定或特殊情況，請以學校公告及權責單位確認為準。";
+}
+function ask(q){q=q.trim();if(!q)return;add(q,'user');add(answer(q),'bot');input.value='';input.focus()}
+document.getElementById('clearChat').addEventListener('click',()=>{
+  messages.innerHTML='';
+  add('對話已清除。你好！我是嘉大扶星小幫手，可以查詢獎助學金、課業輔導、請假、轉系、職涯及校內支持資源。','bot');
+  input.focus();
+});
+document.getElementById('form').addEventListener('submit',e=>{e.preventDefault();ask(input.value)});
+document.querySelectorAll('[data-q]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.category').forEach(x=>x.classList.remove('active'));if(b.classList.contains('category'))b.classList.add('active');ask(b.dataset.q)}));
+</script>
+</body>
+</html>
